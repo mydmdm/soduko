@@ -1,5 +1,7 @@
 #include "solver.h"
 
+#include<algorithm>
+
 using namespace std;
 
 static const int n = 9;
@@ -23,6 +25,22 @@ public:
         } else {
             _value = 0;
             _likely.resize(n, possible);
+        }
+    }
+    void remove_likely(int k) {
+        if (_value == 0) {
+            _likely[k - 1] = impossible;
+        }
+    }
+    bool update() {
+        if (_value != 0) {
+            return 0;
+        } else {
+            bool ready = std::count(_likely.begin(), _likely.end(), possible) == 1;
+            if (ready) {
+                _value = std::find(_likely.begin(), _likely.end(), possible) - _likely.begin() + 1;
+            }
+            return ready;
         }
     }
 
